@@ -61,6 +61,11 @@ public class Movie extends AuditModel {
     private Boolean available;
 
     /**
+     * Movie's stock
+     */
+    private Integer likes;
+
+    /**
      * Getter for the movie's id
      * @return The movie's id
      */
@@ -171,5 +176,22 @@ public class Movie extends AuditModel {
     public void setAvailable(final Boolean available) {
         this.available = available;
     }
+
+    /**
+     * Getter for the movie's likes
+     * @return The movie's likes
+     */
+    public Integer getLikes() {
+        return likes;
+    }
+
+    /**
+     * Setter for the movie's likes
+     * @param likes The movie's likes
+     */
+    public void setLikes(final Integer likes) {
+        this.likes = likes;
+    }
+
 
 }

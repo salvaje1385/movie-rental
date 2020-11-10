@@ -49,6 +49,13 @@
                             </div>
 
                             <div class="form-group col-md-7">
+                                <div><label for="likes" class="col-form-label">Likes</label></div>
+                                <input type="text" name="likesValue" id="likes" data-dojo-type="dijit/form/ValidationTextBox" 
+                                    data-dojo-attach-point="_likes" data-dojo-props="trim: true, maxLength:'50', 
+                                    placeHolder: 'Likes'">
+                            </div>
+
+                            <div class="form-group col-md-7">
                                 <div><label for="available" class="col-form-label">Available</label></div>
                                 <input name="availableValue" id="available" data-dojo-type="dijit/form/CheckBox" checked="checked"
                                     data-dojo-attach-point="_available"/>

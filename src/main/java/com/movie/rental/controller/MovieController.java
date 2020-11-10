@@ -48,6 +48,7 @@ public class MovieController {
                     movie.setStock(movieRequest.getStock());
                     movie.setRentalPrice(movieRequest.getRentalPrice());
                     movie.setSalePrice(movieRequest.getSalePrice());
+                    movie.setLikes(movieRequest.getLikes());
                     movie.setAvailable(movieRequest.getAvailable());
                     return movieRepository.save(movie);
                 }).orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + id));

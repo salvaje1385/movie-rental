@@ -41,6 +41,8 @@ define([
 
         _ascendingSort: false,
 
+        _ascendingLikesSort: true,
+
         postCreate: function() {
             this._getMovies();
         },
@@ -103,7 +105,7 @@ define([
          * @private
          */
         _createMovieTable: function(content) {
-            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice"];
+            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice", "likes"];
 
             // Empty the table before creating it
             domConstruct.empty(this.moviesTable);
@@ -236,7 +238,7 @@ define([
         },
 
         /**
-         * On search
+         * On sort by title
          * @private
          */
         _sortByTitle: function() {
@@ -246,6 +248,19 @@ define([
             this._createMovieTable(this._movieData);
             
             this._ascendingSort = !this._ascendingSort;
+        },
+
+        /**
+         * On sort by likes
+         * @private
+         */
+        _sortByLikes: function() {
+            this._movieData.sort(this._ascendingLikesSort 
+                ? this._compareMovieLikesAsc : this._compareMovieLikesDesc);
+
+            this._createMovieTable(this._movieData);
+            
+            this._ascendingLikesSort = !this._ascendingLikesSort;
         },
 
         /**
@@ -280,6 +295,48 @@ define([
             // Use toUpperCase() to ignore character casing
             const movieA = a.title.toUpperCase();
             const movieB = b.title.toUpperCase();
+          
+            let comparison = 0;
+            if (movieA < movieB) {
+              comparison = 1;
+            } else if (movieA > movieB) {
+              comparison = -1;
+            }
+            return comparison;
+        },
+
+                /**
+         * Compare movies by likes, to order them ascending
+         * @param {Object} a - The element a
+         * @param {Object} b - The element b
+         * @return {Boolean} - The comparison result
+         * @private
+         */
+        _compareMovieLikesAsc: function(a, b) {
+            // Use toUpperCase() to ignore character casing
+            const movieA = a.likes;
+            const movieB = b.likes;
+          
+            let comparison = 0;
+            if (movieA > movieB) {
+              comparison = 1;
+            } else if (movieA < movieB) {
+              comparison = -1;
+            }
+            return comparison;
+        },
+
+        /**
+         * Compare movies by likes, to order them descending
+         * @param {Object} a - The element a
+         * @param {Object} b - The element b
+         * @return {Boolean} - The comparison result
+         * @private
+         */
+        _compareMovieLikesDesc: function(a, b) {
+            // Use toUpperCase() to ignore character casing
+            const movieA = a.likes;
+            const movieB = b.likes;
           
             let comparison = 0;
             if (movieA < movieB) {
