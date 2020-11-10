@@ -30,7 +30,7 @@ public class MovieController {
 
     @GetMapping("/movies")
     public Page<Movie> getMovies(final Pageable pageable) {
-        return movieRepository.findAll(pageable);
+        return movieRepository.findByOrderByTitleAsc(pageable);
     }
 
     @PostMapping("/movies")

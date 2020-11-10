@@ -21,3 +21,11 @@
     font-weight: bold;
 }
 
+.searchMovie {
+    clear: both;
+    padding: 13px 0 12px 0;
+}
+
+.orderLink {
+    cursor: pointer;
+}

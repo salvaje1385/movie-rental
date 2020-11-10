@@ -11,6 +11,7 @@ define([
     "dojo/text!./templates/Movies.html",
     "dijit/form/Button",
     "dijit/Dialog",
+    "dijit/form/TextBox",
 ],function(
     declare, 
     _WidgetBase, 
@@ -22,7 +23,6 @@ define([
     Methods,
     AddMovie,
     template,
-    Button,
 ) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 
@@ -38,6 +38,8 @@ define([
         _movieData: null,
 
         _movieToDelete: null,
+
+        _ascendingSort: false,
 
         postCreate: function() {
             this._getMovies();
@@ -76,7 +78,8 @@ define([
 
                     if (callingGetService) {
                         // Create the movie table with the data from the service
-                        this._createMovieTable(response);
+                        this._movieData = response.content;
+                        this._createMovieTable(response.content);
                     } else {
                         location.reload(true);
                     }
@@ -96,16 +99,17 @@ define([
 
         /**
          * Create the movie table
-         * @param response - The response data from the service
+         * @param content - The content to populate the table
          * @private
          */
-        _createMovieTable: function(response) {
+        _createMovieTable: function(content) {
             let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice"];
 
-            this._movieData = response.content;
+            // Empty the table before creating it
+            domConstruct.empty(this.moviesTable);
 
             // Create the movie table
-            response.content.map(movie => {
+            content.map(movie => {
                 let tr = domConstruct.create("tr", null, this.moviesTable);
 
                 // Create the columns for every movie property
@@ -211,6 +215,79 @@ define([
         onDeleteMovie: function(event) {
             event.preventDefault();
             this._serviceCall(false);
+        },
+
+        /**
+         * On search
+         * @private
+         */
+        _onSearch: function() {
+            let searchString = this._search.get("value"),
+                searchResult = [];
+
+            // Filter the movie list by the search string (comparing with the 
+            // title and description properties)
+            searchResult = this._movieData.filter(
+                movie => movie.title.toLowerCase().indexOf(searchString.toLowerCase()) > -1
+                        || movie.description.toLowerCase().indexOf(searchString.toLowerCase()) > -1
+            );
+
+            this._createMovieTable(searchResult);
+        },
+
+        /**
+         * On search
+         * @private
+         */
+        _sortByTitle: function() {
+            this._movieData.sort(this._ascendingSort 
+                ? this._compareMoviesAsc : this._compareMoviesDesc);
+
+            this._createMovieTable(this._movieData);
+            
+            this._ascendingSort = !this._ascendingSort;
+        },
+
+        /**
+         * Compare movies by title, to order them ascending
+         * @param {Object} a - The element a
+         * @param {Object} b - The element b
+         * @return {Boolean} - The comparison result
+         * @private
+         */
+        _compareMoviesAsc: function(a, b) {
+            // Use toUpperCase() to ignore character casing
+            const movieA = a.title.toUpperCase();
+            const movieB = b.title.toUpperCase();
+          
+            let comparison = 0;
+            if (movieA > movieB) {
+              comparison = 1;
+            } else if (movieA < movieB) {
+              comparison = -1;
+            }
+            return comparison;
+        },
+
+        /**
+         * Compare movies by title, to order them descending
+         * @param {Object} a - The element a
+         * @param {Object} b - The element b
+         * @return {Boolean} - The comparison result
+         * @private
+         */
+        _compareMoviesDesc: function(a, b) {
+            // Use toUpperCase() to ignore character casing
+            const movieA = a.title.toUpperCase();
+            const movieB = b.title.toUpperCase();
+          
+            let comparison = 0;
+            if (movieA < movieB) {
+              comparison = 1;
+            } else if (movieA > movieB) {
+              comparison = -1;
+            }
+            return comparison;
         },
 
     });

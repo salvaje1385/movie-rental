@@ -5,10 +5,18 @@
                 <h2 class="movieTitle my-5">Movies</h2>
                 <div class="addMovie"><a class="btn btn-primary" movieId="1564" data-dojo-attach-event="onClick:_onClickAddMovie"><i class="fas fa-plus"></i></a></div>
             </div>
+
+            <div class="col-md-4 searchMovie">
+                <input type="text" id="search" data-dojo-type="dijit/form/TextBox" 
+                    data-dojo-attach-point="_search" data-dojo-props="trim: true, 
+                    maxLength:'500', placeHolder: 'Search'"
+                    data-dojo-attach-event="change:_onSearch, keyup:_onSearch">
+            </div>
+
             <table class="table table-striped table-responsive-md">
                 <thead>
                     <tr>
-                        <th>Title</th>
+                        <th><a class="orderLink" data-dojo-attach-event="onClick:_sortByTitle">Title</a></th>
                         <th>Description</th>
                         <th>Stock</th>
                         <th>Rental Price</th>
