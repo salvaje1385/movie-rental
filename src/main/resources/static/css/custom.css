@@ -1,3 +1,23 @@
-body {
-    background-color: lightblue;
+
+.movieTitle {
+    float: left;
+    margin-right: 16px;
 }
+
+.addMovie {
+    padding-top: 20px;
+}
+
+.buttonClass {
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.dialogMsg {
+    padding: 9px 0 19px 7px;
+    font-weight: bold;
+}
+

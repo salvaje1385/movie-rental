@@ -1,0 +1,70 @@
+<div>
+    <div data-dojo-type="dijit/Dialog" data-dojo-props="title:'Create Movie', style:'width:400px'"
+        data-dojo-attach-point="addMovieDialog">
+        <div class="container my-5">
+            <h2 class="mb-4">Create Movie</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                    <form data-dojo-attach-point="_addMovieForm" data-dojo-type="dijit/form/Form"
+                        data-dojo-attach-event="onSubmit:_onCreateMovie">
+                        <div class="row">
+                            <div class="form-group col-md-7">
+                                <div class="alert alert-danger hidden" data-dojo-attach-point="_errorMessage">Error</div>
+                            </div>
+                            <div class="form-group col-md-7">
+                                <div><label for="title" class="col-form-label">Title</label></div>
+                                <input type="text" name="title" id="title" data-dojo-type="dijit/form/ValidationTextBox" 
+                                    data-dojo-attach-point="_title" data-dojo-props="required: true,
+                                    trim: true, maxLength:'500', placeHolder: 'Title'">
+                            </div>
+
+                            <div class="form-group col-md-7">
+                                <div><label for="description" class="col-form-label">Description</label></div>
+                                <textarea name="description" id="description"
+                                    placeholder="Description"
+                                    data-dojo-attach-point="_description"
+                                    data-dojo-type="dijit/form/Textarea"
+                                    data-dojo-props="maxLength:2000,trim:true,rows: 7,style:'height:100px'" ></textarea>
+                            </div>
+
+                            <div class="form-group col-md-7">
+                                <div><label for="stock" class="col-form-label">Stock</label></div>
+                                <input type="text" name="stockValue" id="stock" data-dojo-type="dijit/form/ValidationTextBox" 
+                                    data-dojo-attach-point="_stock" data-dojo-props="trim: true, maxLength:'50', 
+                                    placeHolder: 'Stock'">
+                            </div>
+
+                            <div class="form-group col-md-7">
+                                <div><label for="rentalPrice" class="col-form-label">Rental Price</label></div>
+                                <input type="text" name="rentalPriceValue" id="rentalPrice" data-dojo-type="dijit/form/ValidationTextBox" 
+                                    data-dojo-attach-point="_rentalPrice" data-dojo-props="trim: true, maxLength:'50', 
+                                    placeHolder: 'Rental Price'">
+                            </div>
+
+                            <div class="form-group col-md-7">
+                                <div><label for="salePrice" class="col-form-label">Sale Price</label></div>
+                                <input type="text" name="salePriceValue" id="salePrice" data-dojo-type="dijit/form/ValidationTextBox" 
+                                    data-dojo-attach-point="_salePrice" data-dojo-props="trim: true, maxLength:'50', 
+                                    placeHolder: 'Sale Price'">
+                            </div>
+
+                            <div class="form-group col-md-7">
+                                <div><label for="available" class="col-form-label">Available</label></div>
+                                <input name="availableValue" id="available" data-dojo-type="dijit/form/CheckBox" checked="checked"
+                                    data-dojo-attach-point="_available"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-5">
+                                <button type="button" class="btn btn-danger" 
+                                    data-dojo-attach-event="onClick:onCloseDialog">Cancel</button>
+
+                                <button type="submit" class="btn btn-primary" style="margin-left: 7px;">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

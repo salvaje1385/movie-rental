@@ -37,11 +37,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
     
@@ -50,27 +45,7 @@
             <artifactId>bootstrap</artifactId>
             <version>3.3.6</version>
         </dependency>
-    
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap-datepicker</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-    
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>1.9.1</version>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.dojotoolkit/dojo-maven -->
-        <dependency>
-            <groupId>org.dojotoolkit</groupId>
-            <artifactId>dojo-maven</artifactId>
-            <version>1.16.3</version>
-            <type>pom</type>
-        </dependency>
-    
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -123,14 +98,6 @@
     </dependencies>
 
     <build>
-
-        <finalName>movie-rental</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
 
         <plugins>
 
