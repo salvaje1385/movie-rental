@@ -15,11 +15,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "movie")
-@Data // lombok data annotation
+@Getter
+@Setter
 public class Movie extends AuditModel {
     @Id
     @GeneratedValue(generator = "movie_generator")

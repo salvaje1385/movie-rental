@@ -1,5 +1,7 @@
 package com.movie.rental.controller;
 
+import java.net.URISyntaxException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.User;
 import com.movie.rental.repository.UserRepository;
+import com.movie.rental.service.UserService;
+import com.movie.rental.service.dto.LikeDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +30,13 @@ public class UserController {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public UserController(final UserRepository userRepository) {
+    public UserController(final UserRepository userRepository,
+            final UserService userService) {
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     /**
@@ -88,4 +96,21 @@ public class UserController {
                     return ResponseEntity.ok().build();
                 }).orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
     }
+
+    /**
+     * Used when Users like a Movie
+     * @param likeDTO The {@link LikeDTO}
+     * @return A {@link ResponseEntity} object
+     * @throws URISyntaxException
+     */
+    @PostMapping("/users/likeMovie")
+    public ResponseEntity<?> createUser(@RequestBody final LikeDTO likeDTO)
+            throws URISyntaxException {
+
+        log.info("REST request to like a movie: {}", likeDTO);
+
+        userService.likeMovie(likeDTO);
+        return ResponseEntity.ok().build();
+    }
+
 }
