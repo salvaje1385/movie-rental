@@ -1,9 +1,15 @@
 package com.movie.rental.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -68,5 +74,11 @@ public class Movie extends AuditModel {
      * If the movie is available or not
      */
     private Boolean available;
+
+    @ManyToMany(targetEntity=User.class, fetch = FetchType.LAZY)
+    @JoinTable(name = "likes",
+    joinColumns =  @JoinColumn(name = "movie_id"),
+    inverseJoinColumns =  @JoinColumn(name = "user_id"))
+    private Set<User> usersWhoLike;
 
 }
