@@ -32,18 +32,34 @@ public class MovieController {
         this.movieRepository = movieRepository;
     }
 
+    /**
+     * Get all the movies
+     * @param pageable A {@link Pageable} object
+     * @return A {@link Page} of {@link Movie}
+     */
     @GetMapping("/movies")
     public Page<Movie> getMovies(final Pageable pageable) {
         log.info("Get Movies: {}", pageable);
         return movieRepository.findByOrderByTitleAsc(pageable);
     }
 
+    /**
+     * Create a movie
+     * @param movie The {@link Movie} object
+     * @return The created {@link Movie}
+     */
     @PostMapping("/movies")
     public Movie createMovie(@Valid @RequestBody final Movie movie) {
         log.info("Create Movie: {}", movie);
         return movieRepository.save(movie);
     }
 
+    /**
+     * Update a {@link Movie} object
+     * @param id The {@link Movie}'s Id
+     * @param movieRequest The {@link Movie} to update
+     * @return The updated {@link Movie}
+     */
     @PutMapping("movies/{id}")
     public Movie updateMovie(@PathVariable final Long id,
                                    @Valid @RequestBody final Movie movieRequest) {
@@ -60,6 +76,11 @@ public class MovieController {
                 }).orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + id));
     }
 
+    /**
+     * Delete a {@link Movie}
+     * @param movieId The {@link Movie}'s Id
+     * @return A {@link ResponseEntity} object
+     */
     @DeleteMapping("/movies/{movieId}")
     public ResponseEntity<?> deleteMovie(@PathVariable final Long movieId) {
         log.info("Delete Movie: {}", movieId);

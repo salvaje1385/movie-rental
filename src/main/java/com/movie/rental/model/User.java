@@ -2,6 +2,7 @@ package com.movie.rental.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,21 +26,40 @@ public class User extends AuditModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    /**
+     * The User's name
+     */
     @Size(max = 100)
+    @Column(nullable = false)
     private String name;
 
+    /**
+     * The User's email address
+     */
     @Size(max = 100)
     private String email;
 
+    /**
+     * The User's password
+     */
     @Size(max = 2000)
     private String password;
 
+    /**
+     * The User's phone
+     */
     @Size(max = 80)
     private String phone;
 
+    /**
+     * The User's address
+     */
     @Size(max = 2000)
     private String address;
 
+    /**
+     * The User's liked movies
+     */
     @ManyToMany(targetEntity=Movie.class, fetch=FetchType.LAZY, mappedBy = "usersWhoLike")
     private Set<Movie> moviesLiked;
 }
