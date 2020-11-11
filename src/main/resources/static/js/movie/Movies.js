@@ -105,7 +105,7 @@ define([
          * @private
          */
         _createMovieTable: function(content) {
-            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice", "likes"];
+            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice"];
 
             // Empty the table before creating it
             domConstruct.empty(this.moviesTable);
@@ -136,6 +136,7 @@ define([
          * Create the Update or Delete table column (td)
          * @param tr - The table row dom
          * @param updateButton - If we're creating the update or delete button
+         * @param movieId - The movie Id
          * @private
          */
         _createUpdateDeleteTD: function(tr, updateButton, movieId) {
@@ -150,14 +151,14 @@ define([
                 onClickMethod = "_onClickDeleteMovie";
             }
 
-            let td = domConstruct.create("td", null, tr),
-                a = domConstruct.create("button", 
-                    {
-                        "type": "button", 
-                        "class": "btn btn-primary " + buttonClass,
-                        "movieid": movieId, 
-                        "onclick": lang.hitch(this, onClickMethod)
-                    }, td);
+            let td = domConstruct.create("td", null, tr);
+            domConstruct.create("button", 
+                {
+                    "type": "button", 
+                    "class": "btn btn-primary " + buttonClass,
+                    "movieid": movieId, 
+                    "onclick": lang.hitch(this, onClickMethod)
+                }, td);
         },
 
         /**
@@ -180,6 +181,7 @@ define([
             let movieId = event.target.getAttribute("movieid");
             event.preventDefault();
 
+            // Filter the selected movie by Id
             let selectedMovie = this._movieData.filter(movie => movie.id == movieId);
 
             this._addMovie.openUpdateMovieDialog(selectedMovie[0]);
@@ -194,6 +196,7 @@ define([
             let movieId = event.target.getAttribute("movieid");
             event.preventDefault();
 
+            // Filter the selected movie by Id
             let selectedMovie = this._movieData.filter(movie => movie.id == movieId);
 
             this._movieToDelete = selectedMovie[0];
@@ -305,7 +308,7 @@ define([
             return comparison;
         },
 
-                /**
+        /**
          * Compare movies by likes, to order them ascending
          * @param {Object} a - The element a
          * @param {Object} b - The element b

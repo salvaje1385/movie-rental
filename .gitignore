@@ -1,4 +1,5 @@
 /target/
+movie_rental.log
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###

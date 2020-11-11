@@ -65,7 +65,7 @@ define([
             this._stock.set("value", movie.stock);
             this._rentalPrice.set("value", movie.rentalPrice);
             this._salePrice.set("value", movie.salePrice);
-            this._likes.set("value", movie.likes);
+            //this._likes.set("value", movie.likes);
             this._available.set("value", movie.available);
             this.addMovieDialog.show();
         },
@@ -108,8 +108,8 @@ define([
                     "Please insert a number in the Rental Price field", formValues.rentalPriceValue);
                 formValues.salePrice = this._validateNumberFieldError(
                     "Please insert a number in the Sale Price field", formValues.salePriceValue);
-                formValues.likes = this._validateNumberFieldError(
-                    "Please insert a number in the Likes field", formValues.likesValue);
+                //formValues.likes = this._validateNumberFieldError(
+                //    "Please insert a number in the Likes field", formValues.likesValue);
 
                 if (!this._theresNumberError) {
                     this._saveMovie(formValues);
@@ -163,7 +163,7 @@ define([
                 stock: data.stock,
                 rentalPrice: data.rentalPrice,
                 salePrice: data.salePrice,
-                likes: data.likes,
+                //likes: data.likes,
                 available: data.available
             },
             params = {

@@ -39,6 +39,12 @@ public class Movie extends AuditModel {
     private String description;
 
     /**
+     * The Movie's image
+     */
+    @Size(max = 2000)
+    private String image;
+
+    /**
      * Movie's stock
      */
     private Integer stock;
@@ -59,11 +65,6 @@ public class Movie extends AuditModel {
      * If the movie is available or not
      */
     private Boolean available;
-
-    /**
-     * Movie's stock
-     */
-    private Integer likes;
 
     /**
      * Getter for the movie's id
@@ -111,6 +112,22 @@ public class Movie extends AuditModel {
      */
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    /**
+     * Getter for the movie's image
+     * @return The movie's image
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * Setter for the movie's image
+     * @param image The movie's image
+     */
+    public void setImage(final String image) {
+        this.image = image;
     }
 
     /**
@@ -178,20 +195,29 @@ public class Movie extends AuditModel {
     }
 
     /**
-     * Getter for the movie's likes
-     * @return The movie's likes
+     * The toString method for this class
      */
-    public Integer getLikes() {
-        return likes;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Movie [");
+        sb.append("id = ");
+        sb.append(this.id);
+        sb.append(", title = ");
+        sb.append(this.title);
+        sb.append(", description = ");
+        sb.append(this.description);
+        sb.append(", image = ");
+        sb.append(this.image);
+        sb.append(", stock = ");
+        sb.append(this.stock);
+        sb.append(", rentalPrice = ");
+        sb.append(this.rentalPrice);
+        sb.append(", salePrice = ");
+        sb.append(this.salePrice);
+        sb.append(", available = ");
+        sb.append(this.available);
+        sb.append("]");
+        return sb.toString();
     }
-
-    /**
-     * Setter for the movie's likes
-     * @param likes The movie's likes
-     */
-    public void setLikes(final Integer likes) {
-        this.likes = likes;
-    }
-
-
 }
