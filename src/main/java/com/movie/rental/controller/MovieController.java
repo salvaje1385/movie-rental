@@ -2,8 +2,6 @@ package com.movie.rental.controller;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +18,14 @@ import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.repository.MovieRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j // lombok
 @RestController
 public class MovieController {
 
     private final MovieRepository movieRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MovieController.class);
 
     @Autowired
     public MovieController(final MovieRepository movieRepository) {
@@ -34,20 +34,20 @@ public class MovieController {
 
     @GetMapping("/movies")
     public Page<Movie> getMovies(final Pageable pageable) {
-        LOGGER.info("Get Movies: {}", pageable);
+        log.info("Get Movies: {}", pageable);
         return movieRepository.findByOrderByTitleAsc(pageable);
     }
 
     @PostMapping("/movies")
     public Movie createMovie(@Valid @RequestBody final Movie movie) {
-        LOGGER.info("Create Movie: {}", movie);
+        log.info("Create Movie: {}", movie);
         return movieRepository.save(movie);
     }
 
     @PutMapping("movies/{id}")
     public Movie updateMovie(@PathVariable final Long id,
                                    @Valid @RequestBody final Movie movieRequest) {
-        LOGGER.info("Update Movie: id: {}, movie: {}", id, movieRequest);
+        log.info("Update Movie: id: {}, movie: {}", id, movieRequest);
         return movieRepository.findById(id)
                 .map(movie -> {
                     movie.setTitle(movieRequest.getTitle());
@@ -62,7 +62,7 @@ public class MovieController {
 
     @DeleteMapping("/movies/{movieId}")
     public ResponseEntity<?> deleteMovie(@PathVariable final Long movieId) {
-        LOGGER.info("Delete Movie: {}", movieId);
+        log.info("Delete Movie: {}", movieId);
         return movieRepository.findById(movieId)
                 .map(movie -> {
                     movieRepository.delete(movie);
