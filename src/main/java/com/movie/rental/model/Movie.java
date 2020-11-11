@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -77,6 +79,7 @@ public class Movie extends AuditModel {
      */
     private Boolean available;
 
+    @JsonIgnore
     @ManyToMany(targetEntity=User.class, fetch = FetchType.LAZY)
     @JoinTable(name = "likes",
     joinColumns =  @JoinColumn(name = "movie_id"),

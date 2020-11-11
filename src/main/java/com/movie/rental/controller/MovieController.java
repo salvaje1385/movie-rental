@@ -39,7 +39,7 @@ public class MovieController {
      */
     @GetMapping("/movies")
     public Page<Movie> getMovies(final Pageable pageable) {
-        log.info("Get Movies: {}", pageable);
+        log.info("Get Movies");
         return movieRepository.findByOrderByTitleAsc(pageable);
     }
 
@@ -50,7 +50,7 @@ public class MovieController {
      */
     @PostMapping("/movies")
     public Movie createMovie(@Valid @RequestBody final Movie movie) {
-        log.info("Create Movie: {}", movie);
+        log.info("Create Movie: {}", movie.getTitle());
         return movieRepository.save(movie);
     }
 
@@ -63,7 +63,7 @@ public class MovieController {
     @PutMapping("movies/{id}")
     public Movie updateMovie(@PathVariable final Long id,
                                    @Valid @RequestBody final Movie movieRequest) {
-        log.info("Update Movie: id: {}, movie: {}", id, movieRequest);
+        log.info("Update Movie: id: {}, movie: {}", id, movieRequest.getTitle());
         return movieRepository.findById(id)
                 .map(movie -> {
                     movie.setTitle(movieRequest.getTitle());

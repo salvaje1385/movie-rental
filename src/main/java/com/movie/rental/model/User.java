@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -62,6 +64,7 @@ public class User extends AuditModel {
     /**
      * The User's liked movies
      */
+    @JsonIgnore
     @ManyToMany(targetEntity=Movie.class, fetch=FetchType.LAZY, mappedBy = "usersWhoLike")
     private Set<Movie> moviesLiked;
 }
