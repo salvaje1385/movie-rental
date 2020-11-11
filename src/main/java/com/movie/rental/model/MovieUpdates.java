@@ -18,7 +18,7 @@ final @Data // lombok data annotation
 public class MovieUpdates extends AuditModel {
 
     /**
-     * The User Id
+     * The Movie Update Id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
