@@ -104,13 +104,21 @@ public class UserController {
      * @throws URISyntaxException
      */
     @PostMapping("/users/likeMovie")
-    public ResponseEntity<?> createUser(@RequestBody final LikeDTO likeDTO)
+    public ResponseEntity<?> createUser(@Valid @RequestBody final LikeDTO likeDTO)
             throws URISyntaxException {
 
         log.info("REST request to like a movie: {}", likeDTO);
 
-        userService.likeMovie(likeDTO);
+        getUserService().likeMovie(likeDTO);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Getter for the {@link UserService}
+     * @return The {@link UserService}
+     */
+    public UserService getUserService() {
+        return this.userService;
     }
 
 }

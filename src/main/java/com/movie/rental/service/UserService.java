@@ -1,13 +1,11 @@
 package com.movie.rental.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
-import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.model.User;
 import com.movie.rental.repository.MovieRepository;
+import com.movie.rental.repository.PurchaseRepository;
 import com.movie.rental.repository.UserRepository;
 import com.movie.rental.service.dto.LikeDTO;
 
@@ -18,16 +16,18 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j // lombok
-public class UserService {
+public class UserService extends AbstractService {
 
-    private final UserRepository userRepository;
-
-    private final MovieRepository movieRepository;
-
+    /**
+     * Full constructor
+     * @param userRepository An {@link UserRepository}
+     * @param movieRepository A {@link MovieRepository}
+     * @param purchaseRepository A {@link purchaseRepository}
+     */
     public UserService(final UserRepository userRepository,
-            final MovieRepository movieRepository) {
-        this.userRepository = userRepository;
-        this.movieRepository = movieRepository;
+            final MovieRepository movieRepository,
+            final PurchaseRepository purchaseRepository) {
+        super(userRepository, movieRepository, purchaseRepository);
     }
 
     /**
@@ -38,30 +38,14 @@ public class UserService {
     public User likeMovie(final LikeDTO likeDTO) {
         log.info("Like Movie: {}", likeDTO);
 
-        User userObj = null;
-        Movie movieObj = null;
-
-        final Optional<User> user = userRepository.findById(likeDTO.getUserId());
-
-        if (user.isPresent()) {
-            userObj = user.get();
-        } else {
-            new ResourceNotFoundException("User not found");
-        }
-
-        final Optional<Movie> movie = movieRepository.findById(likeDTO.getMovieId());
-
-        if (movie.isPresent()) {
-            movieObj = movie.get();
-        } else {
-            new ResourceNotFoundException("Movie not found");
-        }
+        final User userObj = checkIfUserExists(likeDTO.getUserId());
+        final Movie movieObj = checkIfMovieExists(likeDTO.getMovieId());
 
         log.info("This User: {}-{} liked this movie: {}-{}", userObj.getId(),
                 userObj.getName(), movieObj.getId(), movieObj.getTitle());
 
         movieObj.getUsersWhoLike().add(userObj);
-        movieRepository.save(movieObj);
+        getMovieRepository().save(movieObj);
 
         return userObj;
     }

@@ -8,10 +8,10 @@ import com.movie.rental.model.User;
 import lombok.Data;
 
 /**
- * A DTO representing a User like to a Movie
+ * A DTO holding Purchase data
  */
 final @Data // lombok data annotation
-public class LikeDTO {
+public class PurchaseDTO {
 
     /**
      * The {@link User} Id
@@ -24,5 +24,11 @@ public class LikeDTO {
      */
     @NotNull(message="Please provide a Movie Id")
     private Long movieId;
+
+    /**
+     * The purchase's price
+     */
+    @NotNull(message="Please provide a Price")
+    private Double price;
 
 }

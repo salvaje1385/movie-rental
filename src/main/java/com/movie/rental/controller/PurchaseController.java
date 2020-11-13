@@ -1,5 +1,7 @@
 package com.movie.rental.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,11 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Purchase;
 import com.movie.rental.repository.PurchaseRepository;
+import com.movie.rental.service.PurchaseService;
+import com.movie.rental.service.dto.PurchaseDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +27,13 @@ public class PurchaseController {
 
     private final PurchaseRepository purchaseRepository;
 
+    private final PurchaseService purchaseService;
+
     @Autowired
-    public PurchaseController(final PurchaseRepository purchaseRepository) {
+    public PurchaseController(final PurchaseRepository purchaseRepository,
+            final PurchaseService purchaseService) {
         this.purchaseRepository = purchaseRepository;
+        this.purchaseService = purchaseService;
     }
 
     /**
@@ -52,4 +62,22 @@ public class PurchaseController {
                 }).orElseThrow(() -> new ResourceNotFoundException("Purchase not found with id " + purchaseId));
     }
 
+    /**
+     * Create a purchase
+     * @param purchase The {@link PurchaseDTO} object
+     * @return The created {@link Purchase}
+     */
+    @PostMapping("/purchases")
+    public Purchase createPurchase(@Valid @RequestBody final PurchaseDTO purchaseDTO) {
+        log.info("Create Purchase: {}", purchaseDTO);
+        return getPurchaseService().createPurchase(purchaseDTO);
+    }
+
+    /**
+     * Getter for the {@link PurchaseService}
+     * @return The {@link PurchaseService}
+     */
+    public PurchaseService getPurchaseService() {
+        return this.purchaseService;
+    }
 }
