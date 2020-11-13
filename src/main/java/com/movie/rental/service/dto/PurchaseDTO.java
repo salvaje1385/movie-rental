@@ -3,6 +3,7 @@ package com.movie.rental.service.dto;
 import javax.validation.constraints.NotNull;
 
 import com.movie.rental.model.Movie;
+import com.movie.rental.model.Purchase;
 import com.movie.rental.model.User;
 
 import lombok.Data;
@@ -12,6 +13,11 @@ import lombok.Data;
  */
 final @Data // lombok data annotation
 public class PurchaseDTO {
+
+    /**
+     * The {@link Purchase} Id
+     */
+    private Long id;
 
     /**
      * The {@link User} Id

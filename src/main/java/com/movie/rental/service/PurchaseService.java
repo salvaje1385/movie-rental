@@ -32,12 +32,12 @@ public class PurchaseService extends AbstractService {
     }
 
     /**
-     * Save a Purchase
+     * Save or update a Purchase
      * @param purchaseDTO The PurchaseDTO
      * @return The Purchase created
      */
-    public Purchase createPurchase(final PurchaseDTO purchaseDTO) {
-        log.info("purchaseDTO: {}", purchaseDTO);
+    public Purchase saveOrUpdatePurchase(final PurchaseDTO purchaseDTO) {
+        log.info("saveOrUpdatePurchase: {}", purchaseDTO);
 
         final User user = checkIfUserExists(purchaseDTO.getUserId());
         final Movie movie = checkIfMovieExists(purchaseDTO.getMovieId());
@@ -45,7 +45,15 @@ public class PurchaseService extends AbstractService {
         log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
                 user.getName(), movie.getId(), movie.getTitle(), purchaseDTO.getPrice());
 
-        final Purchase purchase = new Purchase();
+        final Purchase purchase;
+        if (purchaseDTO.getId() != null) {
+            // Updating
+            purchase = checkIfPurchaseExists(purchaseDTO.getId());
+        } else {
+            // Creating
+            purchase = new Purchase();
+        }
+
         purchase.setUser(user);
         purchase.setMovie(movie);
         purchase.setPrice(purchaseDTO.getPrice());

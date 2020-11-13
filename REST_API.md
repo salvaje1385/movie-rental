@@ -141,13 +141,38 @@ http://localhost:8080/purchases
 GET
 ```
 
+Create:
+
+```bash
+http://localhost:8080/purchases
+POST
+
+{
+  "userId": 6,
+  "movieId": 3551,
+  "price": 180.45
+}
+```
+
+Update:
+
+```bash
+http://localhost:8080/purchases/12
+PUT
+
+{
+  "userId": 6,
+  "movieId": 3551,
+  "price": 180.45
+}
+```
+
 Delete:
 
 ```bash
 http://localhost:8080/purchases/1
 DELETE
 ```
-
 
 # Movie Updates
 
