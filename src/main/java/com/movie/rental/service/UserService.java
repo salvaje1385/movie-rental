@@ -31,22 +31,30 @@ public class UserService extends AbstractService {
     }
 
     /**
-     * Use this method when a User likes a Movie
+     * Use this method when a User likes/unlikes a Movie
      * @param likeDTO The LikeDTO
      * @return The User who liked the Movie
      */
     public User likeMovie(final LikeDTO likeDTO) {
-        log.info("Like Movie: {}", likeDTO);
+        log.info("Like/unlike a Movie: {}", likeDTO);
 
         final User userObj = checkIfUserExists(likeDTO.getUserId());
         final Movie movieObj = checkIfMovieExists(likeDTO.getMovieId());
 
-        log.info("This User: {}-{} liked this movie: {}-{}", userObj.getId(),
-                userObj.getName(), movieObj.getId(), movieObj.getTitle());
+        log.info("This User: {}-{} {} this movie: {}-{}", userObj.getId(),
+                userObj.getName(), likeDTO.getLike() ? "likes" : "unlikes",
+                movieObj.getId(), movieObj.getTitle());
 
-        movieObj.getUsersWhoLike().add(userObj);
+        if (likeDTO.getLike()) {
+            // The User is liking the Movie
+            movieObj.getUsersWhoLike().add(userObj);
+        } else {
+            // The User is unliking the Movie
+            movieObj.getUsersWhoLike().remove(userObj);
+        }
         getMovieRepository().save(movieObj);
 
         return userObj;
     }
+
 }

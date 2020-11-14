@@ -25,4 +25,10 @@ public class LikeDTO {
     @NotNull(message="Please provide a Movie Id")
     private Long movieId;
 
+    /**
+     * If true the User is liking the movie, if false then unlikes it
+     */
+    @NotNull(message="Please provide a like parameter")
+    private Boolean like;
+
 }
