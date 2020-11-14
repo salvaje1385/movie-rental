@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.repository.MovieRepository;
+import com.movie.rental.service.MovieService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +27,13 @@ public class MovieController {
 
     private final MovieRepository movieRepository;
 
+    private final MovieService movieService;
 
     @Autowired
-    public MovieController(final MovieRepository movieRepository) {
+    public MovieController(final MovieRepository movieRepository,
+            final MovieService movieService) {
         this.movieRepository = movieRepository;
+        this.movieService = movieService;
     }
 
     /**
@@ -64,16 +68,7 @@ public class MovieController {
     public Movie updateMovie(@PathVariable final Long id,
                                    @Valid @RequestBody final Movie movieRequest) {
         log.info("Update Movie: id: {}, movie: {}", id, movieRequest.getTitle());
-        return movieRepository.findById(id)
-                .map(movie -> {
-                    movie.setTitle(movieRequest.getTitle());
-                    movie.setDescription(movieRequest.getDescription());
-                    movie.setStock(movieRequest.getStock());
-                    movie.setRentalPrice(movieRequest.getRentalPrice());
-                    movie.setSalePrice(movieRequest.getSalePrice());
-                    movie.setAvailable(movieRequest.getAvailable());
-                    return movieRepository.save(movie);
-                }).orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + id));
+        return getMovieService().updateMovie(id, movieRequest);
     }
 
     /**
@@ -89,5 +84,13 @@ public class MovieController {
                     movieRepository.delete(movie);
                     return ResponseEntity.ok().build();
                 }).orElseThrow(() -> new ResourceNotFoundException("Movie not found with id " + movieId));
+    }
+
+    /**
+     * Getter for the {@link MovieService}
+     * @return The {@link MovieService}
+     */
+    public MovieService getMovieService() {
+        return this.movieService;
     }
 }

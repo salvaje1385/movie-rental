@@ -59,5 +59,18 @@ public class MovieUpdates extends AuditModel {
         RENTAL_PRICE_UPDATE,
         /** 2 = If a sale price update was done */
         SALE_PRICE_UPDATE;
+
+        @Override
+        public String toString() {
+            String result = "";
+            if (TITLE_UPDATE == this) {
+                result = "title";
+            } else if (RENTAL_PRICE_UPDATE == this) {
+                result = "rental price";
+            } else if (SALE_PRICE_UPDATE == this) {
+                result = "sale price";
+            }
+            return result;
+        }
     }
 }

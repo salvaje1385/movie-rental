@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,6 +44,7 @@ public class Movie extends AuditModel {
      */
     @NotBlank
     @Size(max = 500)
+    @Column(nullable = false)
     private String title;
 
     /**
@@ -60,23 +62,29 @@ public class Movie extends AuditModel {
     /**
      * Movie's stock
      */
+    @NotNull
+    @Column(nullable = false)
     private Integer stock;
 
     /**
      * Movie's rental price
      */
-    @Column(name = "rental_price")
+    @NotNull
+    @Column(name = "rental_price", nullable = false)
     private Double rentalPrice;
 
     /**
      * Movie's sale price
      */
-    @Column(name = "sale_price")
+    @NotNull
+    @Column(name = "sale_price", nullable = false)
     private Double salePrice;
 
     /**
      * If the movie is available or not
      */
+    @NotNull
+    @Column(columnDefinition = "boolean default 'true'", nullable = false)
     private Boolean available;
 
     @JsonIgnore

@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // lombok
 public class MovieService  extends AbstractService {
 
+    private final MovieUpdatesService movieUpdatesService;
+
     /**
      * Full constructor
      * @param userRepository An {@link UserRepository}
@@ -28,9 +30,12 @@ public class MovieService  extends AbstractService {
     public MovieService(final UserRepository userRepository,
             final MovieRepository movieRepository,
             final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository) {
+            final RentalRepository rentalRepository,
+            final MovieUpdatesService movieUpdatesService) {
         super(userRepository, movieRepository, purchaseRepository,
                 rentalRepository);
+
+        this.movieUpdatesService = movieUpdatesService;
     }
 
     /**
@@ -59,6 +64,42 @@ public class MovieService  extends AbstractService {
                 movie.getTitle());
         movie.setStock(movie.getStock() + 1);
         getMovieRepository().save(movie);
+    }
+
+    /**
+     * Update a Movie
+     * @param id The Movie Id
+     * @param movieRequest The new Movie parameters
+     * @return The updated Movie
+     */
+    public Movie updateMovie(final Long id, final Movie movieRequest) {
+        log.info("Update Movie: id: {}, movie: {}", id, movieRequest.getTitle());
+        final Movie movie = checkIfMovieExists(id);
+        final String oldTitle = movie.getTitle();
+        final String oldRentalPrice = movie.getRentalPrice().toString();
+        final String oldSalePrice = movie.getSalePrice().toString();
+
+        movie.setTitle(movieRequest.getTitle());
+        movie.setDescription(movieRequest.getDescription());
+        movie.setStock(movieRequest.getStock());
+        movie.setRentalPrice(movieRequest.getRentalPrice());
+        movie.setSalePrice(movieRequest.getSalePrice());
+        movie.setAvailable(movieRequest.getAvailable());
+        getMovieRepository().save(movie);
+
+        // Create a MovieUpdate register
+        getMovieUpdatesService().createMovieUpdate(movie, oldTitle,
+                oldRentalPrice, oldSalePrice);
+
+        return movie;
+    }
+
+    /**
+     * Getter for the MovieUpdates Service
+     * @return The MovieUpdates Service
+     */
+    public MovieUpdatesService getMovieUpdatesService() {
+        return this.movieUpdatesService;
     }
 
 }
