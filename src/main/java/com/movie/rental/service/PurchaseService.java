@@ -20,19 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // lombok
 public class PurchaseService extends AbstractService {
 
+    private final MovieService movieService;
+
     /**
      * Full constructor
      * @param userRepository An {@link UserRepository}
      * @param movieRepository A {@link MovieRepository}
-     * @param purchaseRepository A {@link purchaseRepository}
-     * @param rentalRepository A {@link rentalRepository}
+     * @param purchaseRepository A {@link PurchaseRepository}
+     * @param rentalRepository A {@link RentalRepository}
+     * @param movieService A {@link MovieService}
      */
     public PurchaseService(final UserRepository userRepository,
             final MovieRepository movieRepository,
             final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository) {
+            final RentalRepository rentalRepository,
+            final MovieService movieService) {
         super(userRepository, movieRepository, purchaseRepository,
                 rentalRepository);
+
+        this.movieService = movieService;
     }
 
     /**
@@ -45,18 +51,25 @@ public class PurchaseService extends AbstractService {
 
         final User user = checkIfUserExists(purchaseDTO.getUserId());
         final Movie movie = checkIfMovieExists(purchaseDTO.getMovieId());
+        Movie oldMovie = null;
+        boolean creatingMovie = false;
 
         final Purchase purchase;
         if (purchaseDTO.getId() != null) {
             // Updating
             purchase = checkIfPurchaseExists(purchaseDTO.getId());
+            oldMovie = purchase.getMovie();
+
             // If updating we take the old price
             purchase.setPrice(purchase.getPrice());
         } else {
             // Creating
             purchase = new Purchase();
+
             // The Price is only assigned when creating
             purchase.setPrice(movie.getSalePrice());
+
+            creatingMovie = true;
         }
 
         log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
@@ -67,6 +80,50 @@ public class PurchaseService extends AbstractService {
 
         getPurchaseRepository().save(purchase);
 
+        // Update the Movie stock
+        updateMovieStock(creatingMovie, movie, oldMovie);
+
         return purchase;
+    }
+
+    /**
+     * Update the Movie stock
+     * @param creatingMovie True if we're creating a Movie, false if we're updating it
+     * @param movie The Movie to set
+     * @param oldMovie The previous Movie
+     */
+    private void updateMovieStock(final boolean creatingMovie,
+            final Movie movie, final Movie oldMovie) {
+        if (creatingMovie) {
+            // Decrease the Movie stock by one
+            getMovieService().decreaseStock(movie);
+
+        // If the Movie changes then update every Movie stock
+        } else if (!movie.getId().equals(oldMovie.getId())) {
+            getMovieService().increaseStock(oldMovie);
+            getMovieService().decreaseStock(movie);
+        }
+    }
+
+    /**
+     * Delete a Purchase
+     * @param purchaseId The Purchase Id
+     */
+    public void deletePurchase(final Long purchaseId) {
+        log.info("Delete Purchase: {}", purchaseId);
+        final Purchase purchase = checkIfPurchaseExists(purchaseId);
+
+        // Increase the Movie stock by one
+        getMovieService().increaseStock(purchase.getMovie());
+
+        getPurchaseRepository().delete(purchase);
+    }
+
+    /**
+     * Getter for the {@link MovieService}
+     * @return The {@link MovieService}
+     */
+    public MovieService getMovieService() {
+        return this.movieService;
     }
 }

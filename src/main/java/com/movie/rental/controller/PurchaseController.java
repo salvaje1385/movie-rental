@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Purchase;
 import com.movie.rental.repository.PurchaseRepository;
 import com.movie.rental.service.PurchaseService;
@@ -56,11 +55,10 @@ public class PurchaseController {
     @DeleteMapping("/purchases/{purchaseId}")
     public ResponseEntity<?> deletePurchase(@PathVariable final Long purchaseId) {
         log.info("Delete Purchase: {}", purchaseId);
-        return purchaseRepository.findById(purchaseId)
-                .map(purchase -> {
-                    purchaseRepository.delete(purchase);
-                    return ResponseEntity.ok().build();
-                }).orElseThrow(() -> new ResourceNotFoundException("Purchase not found with id " + purchaseId));
+
+        getPurchaseService().deletePurchase(purchaseId);
+
+        return ResponseEntity.ok().build();
     }
 
     /**

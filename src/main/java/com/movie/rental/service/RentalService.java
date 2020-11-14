@@ -26,8 +26,8 @@ public class RentalService extends AbstractService {
      * Full constructor
      * @param userRepository An {@link UserRepository}
      * @param movieRepository A {@link MovieRepository}
-     * @param purchaseRepository A {@link purchaseRepository}
-     * @param rentalRepository A {@link rentalRepository}
+     * @param purchaseRepository A {@link PurchaseRepository}
+     * @param rentalRepository A {@link RentalRepository}
      */
     public RentalService(final UserRepository userRepository,
             final MovieRepository movieRepository,
