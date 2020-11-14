@@ -7,6 +7,7 @@ import com.movie.rental.model.Purchase;
 import com.movie.rental.model.User;
 import com.movie.rental.repository.MovieRepository;
 import com.movie.rental.repository.PurchaseRepository;
+import com.movie.rental.repository.RentalRepository;
 import com.movie.rental.repository.UserRepository;
 import com.movie.rental.service.dto.PurchaseDTO;
 
@@ -24,11 +25,14 @@ public class PurchaseService extends AbstractService {
      * @param userRepository An {@link UserRepository}
      * @param movieRepository A {@link MovieRepository}
      * @param purchaseRepository A {@link purchaseRepository}
+     * @param rentalRepository A {@link rentalRepository}
      */
     public PurchaseService(final UserRepository userRepository,
             final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository) {
-        super(userRepository, movieRepository, purchaseRepository);
+            final PurchaseRepository purchaseRepository,
+            final RentalRepository rentalRepository) {
+        super(userRepository, movieRepository, purchaseRepository,
+                rentalRepository);
     }
 
     /**

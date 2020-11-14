@@ -5,9 +5,11 @@ import java.util.Optional;
 import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.model.Purchase;
+import com.movie.rental.model.Rental;
 import com.movie.rental.model.User;
 import com.movie.rental.repository.MovieRepository;
 import com.movie.rental.repository.PurchaseRepository;
+import com.movie.rental.repository.RentalRepository;
 import com.movie.rental.repository.UserRepository;
 
 public class AbstractService {
@@ -18,12 +20,16 @@ public class AbstractService {
 
     private final PurchaseRepository purchaseRepository;
 
+    private final RentalRepository rentalRepository;
+
     public AbstractService(final UserRepository userRepository,
             final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository) {
+            final PurchaseRepository purchaseRepository,
+            final RentalRepository rentalRepository) {
         this.userRepository = userRepository;
         this.movieRepository = movieRepository;
         this.purchaseRepository = purchaseRepository;
+        this.rentalRepository = rentalRepository;
     }
 
     /**
@@ -84,6 +90,25 @@ public class AbstractService {
     }
 
     /**
+     * Check if a Rental object exists, if so, return it, else throw exception
+     * @param rentalId The Rental Id
+     * @return The Rental
+     */
+    public Rental checkIfRentalExists(final Long rentalId) {
+        Rental rentalObj = null;
+
+        final Optional<Rental> rental = rentalRepository.findById(rentalId);
+
+        if (rental.isPresent()) {
+            rentalObj = rental.get();
+        } else {
+            throw new ResourceNotFoundException("Rental not found");
+        }
+
+        return rentalObj;
+    }
+
+    /**
      * Getter for the {@link UserRepository}
      * @return The {@link UserRepository}
      */
@@ -105,6 +130,14 @@ public class AbstractService {
      */
     public PurchaseRepository getPurchaseRepository() {
         return purchaseRepository;
+    }
+
+    /**
+     * Getter for the {@link RentalRepository}
+     * @return The {@link RentalRepository}
+     */
+    public RentalRepository getRentalRepository() {
+        return rentalRepository;
     }
 
 }

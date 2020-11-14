@@ -71,8 +71,8 @@ http://localhost:8080/users
 POST
 
 {
-  "name": "Alberto Espinoza",
-  "email": "aespinoza@test.com",
+  "name": "Humberto Perez",
+  "email": "hperez@test.com",
   "password": "1234",
   "phone": "155611511",
   "address": "at home"
@@ -85,8 +85,8 @@ Update:
 http://localhost:8080/users/1000
 PUT
 {
-  "name": "Alberto Espinoza 2",
-  "email": "aespinoza@test2.com",
+  "name": "Humberto Perez",
+  "email": "hperez@test.com",
   "password": "1234",
   "phone": "155611511",
   "address": "at home"
@@ -103,7 +103,9 @@ DELETE
 
 
 
-Like a Movie
+# Likes
+
+Like a Movie:
 
 ```bash
 http://localhost:8080/users/likeMovie
@@ -111,7 +113,21 @@ POST
 
 {
   "userId": 6,
-  "movieId": 3251
+  "movieId": 3251,
+  "like": true
+}
+```
+
+Unlike a Movie:
+
+```bash
+http://localhost:8080/users/likeMovie
+POST
+
+{
+  "userId": 6,
+  "movieId": 3251,
+  "like": false
 }
 ```
 
@@ -123,6 +139,48 @@ Get:
 ```bash
 http://localhost:8080/rentals
 GET
+```
+
+Rent a Movie:
+
+```bash
+http://localhost:8080/rentals
+POST
+
+{
+  "userId": 14,
+  "movieId": 1051,
+  "dueDate": 1605326462890
+}
+```
+
+Return a Movie:
+
+```bash
+http://localhost:8080/rentals/18
+PUT
+
+{
+  "userId": 14,
+  "movieId": 1051,
+  "dueDate": 1605326462890,
+  "returnDate": 1605008548703
+}
+```
+
+Add a penalty:
+
+```bash
+http://localhost:8080/rentals/18
+PUT
+
+{
+  "userId": 14,
+  "movieId": 1051,
+  "dueDate": 1605326462890,
+  "returnDate": 1605008548703,
+  "penalty": 5.44
+}
 ```
 
 Delete:
