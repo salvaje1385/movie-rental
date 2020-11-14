@@ -31,10 +31,4 @@ public class PurchaseDTO {
     @NotNull(message="Please provide a Movie Id")
     private Long movieId;
 
-    /**
-     * The purchase's price
-     */
-    @NotNull(message="Please provide a Price")
-    private Double price;
-
 }

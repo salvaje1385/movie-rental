@@ -46,21 +46,24 @@ public class PurchaseService extends AbstractService {
         final User user = checkIfUserExists(purchaseDTO.getUserId());
         final Movie movie = checkIfMovieExists(purchaseDTO.getMovieId());
 
-        log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
-                user.getName(), movie.getId(), movie.getTitle(), purchaseDTO.getPrice());
-
         final Purchase purchase;
         if (purchaseDTO.getId() != null) {
             // Updating
             purchase = checkIfPurchaseExists(purchaseDTO.getId());
+            // If updating we take the old price
+            purchase.setPrice(purchase.getPrice());
         } else {
             // Creating
             purchase = new Purchase();
+            // The Price is only assigned when creating
+            purchase.setPrice(movie.getSalePrice());
         }
+
+        log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
+                user.getName(), movie.getId(), movie.getTitle(), purchase.getPrice());
 
         purchase.setUser(user);
         purchase.setMovie(movie);
-        purchase.setPrice(purchaseDTO.getPrice());
 
         getPurchaseRepository().save(purchase);
 

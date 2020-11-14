@@ -206,22 +206,20 @@ http://localhost:8080/purchases
 POST
 
 {
-  "userId": 6,
-  "movieId": 3551,
-  "price": 180.45
+  "userId": 13,
+  "movieId": 1051
 }
 ```
 
 Update:
 
 ```bash
-http://localhost:8080/purchases/12
+http://localhost:8080/purchases/19
 PUT
 
 {
-  "userId": 6,
-  "movieId": 3551,
-  "price": 180.45
+  "userId": 14,
+  "movieId": 1051
 }
 ```
 
