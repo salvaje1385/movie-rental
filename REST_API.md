@@ -154,7 +154,7 @@ POST
 }
 ```
 
-Return a Movie:
+Return a rented Movie:
 
 ```bash
 http://localhost:8080/rentals/18

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Rental;
 import com.movie.rental.repository.RentalRepository;
 import com.movie.rental.service.RentalService;
@@ -56,11 +55,10 @@ public class RentalController {
     @DeleteMapping("/rentals/{rentalId}")
     public ResponseEntity<?> deleteRental(@PathVariable final Long rentalId) {
         log.info("Delete Rental: {}", rentalId);
-        return rentalRepository.findById(rentalId)
-                .map(rental -> {
-                    rentalRepository.delete(rental);
-                    return ResponseEntity.ok().build();
-                }).orElseThrow(() -> new ResourceNotFoundException("Rental not found with id " + rentalId));
+
+        getRentalService().deleteRental(rentalId);
+
+        return ResponseEntity.ok().build();
     }
 
     /**

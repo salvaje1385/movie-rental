@@ -52,7 +52,7 @@ public class PurchaseService extends AbstractService {
         final User user = checkIfUserExists(purchaseDTO.getUserId());
         final Movie movie = checkIfMovieExists(purchaseDTO.getMovieId());
         Movie oldMovie = null;
-        boolean creatingMovie = false;
+        boolean creatingPurchase = false;
 
         final Purchase purchase;
         if (purchaseDTO.getId() != null) {
@@ -69,8 +69,11 @@ public class PurchaseService extends AbstractService {
             // The Price is only assigned when creating
             purchase.setPrice(movie.getSalePrice());
 
-            creatingMovie = true;
+            creatingPurchase = true;
         }
+
+        // Update the Movie stock
+        updateMovieStock(creatingPurchase, movie, oldMovie);
 
         log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
                 user.getName(), movie.getId(), movie.getTitle(), purchase.getPrice());
@@ -80,21 +83,18 @@ public class PurchaseService extends AbstractService {
 
         getPurchaseRepository().save(purchase);
 
-        // Update the Movie stock
-        updateMovieStock(creatingMovie, movie, oldMovie);
-
         return purchase;
     }
 
     /**
      * Update the Movie stock
-     * @param creatingMovie True if we're creating a Movie, false if we're updating it
+     * @param creatingPurchase True if we're creating a Purchase, false if we're updating it
      * @param movie The Movie to set
      * @param oldMovie The previous Movie
      */
-    private void updateMovieStock(final boolean creatingMovie,
+    private void updateMovieStock(final boolean creatingPurchase,
             final Movie movie, final Movie oldMovie) {
-        if (creatingMovie) {
+        if (creatingPurchase) {
             // Decrease the Movie stock by one
             getMovieService().decreaseStock(movie);
 
