@@ -1,15 +1,75 @@
 ## REST API
 
-# Movies
+# 1. Movies
 
-Get:
+1.1 Get:
+
+All the Movie REST calls are paginated.
+
+1.1.1 Get all Movies:
 
 ```bash
 http://localhost:8080/movies
 GET
 ```
 
-Create:
+1.1.2 Get all Movies which title contains "ave" ignoring case:
+
+```bash
+http://localhost:8080/movies?title=ave
+GET
+```
+
+1.1.3 Get all Movies which title contains "ave" ignoring case, and are available:
+
+```bash
+http://localhost:8080/movies?title=ave&available=true
+GET
+```
+
+1.1.4 Get all Movies which title contains "ave" ignoring case, and aren't available:
+
+```bash
+http://localhost:8080/movies?title=ave&available=false
+GET
+```
+
+1.1.5 Get all available Movies:
+
+```bash
+http://localhost:8080/movies?available=true
+GET
+```
+
+1.1.6 Get all unavailable Movies:
+
+```bash
+http://localhost:8080/movies?available=false
+GET
+```
+
+1.1.7 Sort Movies by likes (descending), and then by title (descending):
+
+```bash
+http://localhost:8080/movies?sort=likes,desc&sort=title,desc
+GET
+```
+
+1.1.8 Get all Movies which title contains "a" ignoring case, and sort by likes, descending:
+
+```bash
+http://localhost:8080/movies?title=a&sort=likes,desc
+GET
+```
+
+1.1.9 Get all Movies in the second page (pages are 0 indexed), having 10 as the page size:
+
+```bash
+http://localhost:8080/movies?page=1&size=10
+GET
+```
+
+1.2 Create:
 
 ```bash
 http://localhost:8080/movies
@@ -26,7 +86,7 @@ POST
 }
 ```
 
-Update:
+1.3 Update:
 
 ```bash
 http://localhost:8080/movies/3701
@@ -44,7 +104,7 @@ PUT
 }
 ```
 
-Delete:
+1.4 Delete:
 
 ```bash
 http://localhost:8080/movies/3701
@@ -54,17 +114,17 @@ DELETE
 
 
 
-# Users
+# 2. Users
 
 
-Get:
+2.1 Get:
 
 ```bash
 http://localhost:8080/users
 GET
 ```
 
-Create:
+2.2 Create:
 
 ```bash
 http://localhost:8080/users
@@ -79,7 +139,7 @@ POST
 }
 ```
 
-Update:
+2.3 Update:
 
 ```bash
 http://localhost:8080/users/1000
@@ -93,7 +153,7 @@ PUT
 }
 ```
 
-Delete:
+2.4 Delete:
 
 ```bash
 http://localhost:8080/users/1000
@@ -103,9 +163,9 @@ DELETE
 
 
 
-# Likes
+# 3 Likes
 
-Like a Movie:
+3.1 Like a Movie:
 
 ```bash
 http://localhost:8080/users/likeMovie
@@ -118,7 +178,7 @@ POST
 }
 ```
 
-Unlike a Movie:
+3.2 Unlike a Movie:
 
 ```bash
 http://localhost:8080/users/likeMovie
@@ -132,16 +192,16 @@ POST
 ```
 
 
-# Rentals
+# 4. Rentals
 
-Get:
+4.1 Get:
 
 ```bash
 http://localhost:8080/rentals
 GET
 ```
 
-Rent a Movie:
+4.2.1 Rent a Movie:
 
 ```bash
 http://localhost:8080/rentals
@@ -154,7 +214,7 @@ POST
 }
 ```
 
-Return a rented Movie:
+4.2.2 Return a rented Movie:
 
 ```bash
 http://localhost:8080/rentals/18
@@ -168,7 +228,7 @@ PUT
 }
 ```
 
-Add a penalty:
+4.2.3 Add a penalty:
 
 ```bash
 http://localhost:8080/rentals/18
@@ -183,23 +243,23 @@ PUT
 }
 ```
 
-Delete:
+4.3 Delete:
 
 ```bash
 http://localhost:8080/rentals/1
 DELETE
 ```
 
-# Purchases
+# 5. Purchases
 
-Get:
+5.1 Get:
 
 ```bash
 http://localhost:8080/purchases
 GET
 ```
 
-Create:
+5.2 Create:
 
 ```bash
 http://localhost:8080/purchases
@@ -211,7 +271,7 @@ POST
 }
 ```
 
-Update:
+5.3 Update:
 
 ```bash
 http://localhost:8080/purchases/19
@@ -223,23 +283,23 @@ PUT
 }
 ```
 
-Delete:
+5.4 Delete:
 
 ```bash
 http://localhost:8080/purchases/1
 DELETE
 ```
 
-# Movie Updates
+# 6. Movie Updates
 
-Get:
+6.1 Get:
 
 ```bash
 http://localhost:8080/movieUpdates
 GET
 ```
 
-Delete:
+6.2 Delete:
 
 ```bash
 http://localhost:8080/movieUpdates/1

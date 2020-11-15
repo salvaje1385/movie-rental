@@ -67,6 +67,36 @@ public class MovieService  extends AbstractService {
     }
 
     /**
+     * Decrease the Movie Likes by one
+     * @param movie The {@link Movie} object
+     */
+    public void decreaseLikes(final Movie movie) {
+        final Integer likes = movie.getLikes() != null ? movie.getLikes() : 0;
+
+        if (likes > 0) {
+            log.info("Decreasing this Movie's Likes by 1: {} - {}", movie.getId(),
+                    movie.getTitle());
+            movie.setLikes(likes - 1);
+            getMovieRepository().save(movie);
+        } else {
+            throw new MovieRentalValidationException("The Movie's likes can't be lower than 0");
+        }
+    }
+
+    /**
+     * Increase the Movie Likes by one
+     * @param movie The {@link Movie} object
+     */
+    public void increaseLikes(final Movie movie) {
+        log.info("Increasing this Movie's Likes by 1: {} - {}", movie.getId(),
+                movie.getTitle());
+
+        final Integer likes = movie.getLikes() != null ? movie.getLikes() : 0;
+        movie.setLikes(likes + 1);
+        getMovieRepository().save(movie);
+    }
+
+    /**
      * Update a Movie
      * @param id The Movie Id
      * @param movieRequest The new Movie parameters

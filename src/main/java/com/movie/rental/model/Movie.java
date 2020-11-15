@@ -87,6 +87,9 @@ public class Movie extends AuditModel {
     @Column(columnDefinition = "boolean default 'true'", nullable = false)
     private Boolean available;
 
+    @Column(columnDefinition = "integer default '0'")
+    private Integer likes = 0;
+
     @JsonIgnore
     @ManyToMany(targetEntity=User.class, fetch = FetchType.LAZY)
     @JoinTable(name = "likes",

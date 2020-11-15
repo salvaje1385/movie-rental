@@ -19,19 +19,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j // lombok
 public class UserService extends AbstractService {
 
+    private final MovieService movieService;
+
     /**
      * Full constructor
      * @param userRepository An {@link UserRepository}
      * @param movieRepository A {@link MovieRepository}
      * @param purchaseRepository A {@link PurchaseRepository}
      * @param rentalRepository A {@link RentalRepository}
+     * @param movieService A {@link MovieService}
      */
     public UserService(final UserRepository userRepository,
             final MovieRepository movieRepository,
             final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository) {
+            final RentalRepository rentalRepository,
+            final MovieService movieService) {
         super(userRepository, movieRepository, purchaseRepository,
                 rentalRepository);
+
+        this.movieService = movieService;
     }
 
     /**
@@ -50,15 +56,40 @@ public class UserService extends AbstractService {
                 movieObj.getId(), movieObj.getTitle());
 
         if (likeDTO.getLike()) {
-            // The User is liking the Movie
-            movieObj.getUsersWhoLike().add(userObj);
+            if (!movieObj.getUsersWhoLike().contains(userObj)) {
+                // The User is liking the Movie
+                movieObj.getUsersWhoLike().add(userObj);
+
+                getMovieRepository().save(movieObj);
+
+                // Increase the Movie's likes count
+                getMovieService().increaseLikes(movieObj);
+            } else {
+                log.info("Not saving the movie like because already existed");
+            }
         } else {
-            // The User is unliking the Movie
-            movieObj.getUsersWhoLike().remove(userObj);
+            if (movieObj.getUsersWhoLike().contains(userObj)) {
+                // The User is unliking the Movie
+                movieObj.getUsersWhoLike().remove(userObj);
+
+                getMovieRepository().save(movieObj);
+
+                // Decrease the Movie's likes count
+                getMovieService().decreaseLikes(movieObj);
+            } else {
+                log.info("Not removing the movie like because didn't existed");
+            }
         }
-        getMovieRepository().save(movieObj);
 
         return userObj;
+    }
+
+    /**
+     * Getter for the {@link MovieService}
+     * @return The {@link MovieService}
+     */
+    public MovieService getMovieService() {
+        return this.movieService;
     }
 
 }

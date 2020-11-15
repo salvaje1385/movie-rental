@@ -80,8 +80,8 @@ define([
 
                     if (callingGetService) {
                         // Create the movie table with the data from the service
-                        this._movieData = response.content;
-                        this._createMovieTable(response.content);
+                        this._movieData = response.movies;
+                        this._createMovieTable(response.movies);
                     } else {
                         location.reload(true);
                     }
@@ -105,7 +105,7 @@ define([
          * @private
          */
         _createMovieTable: function(content) {
-            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice"];
+            let movieProperties = ["title", "description", "stock", "rentalPrice", "salePrice", "likes"];
 
             // Empty the table before creating it
             domConstruct.empty(this.moviesTable);
