@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class RentalController {
      * @return A {@link Page} of {@link Rental}
      */
     @GetMapping("/rentals")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<Rental> getRentals(final Pageable pageable) {
         log.info("Get Rentals: {}", pageable);
         return rentalRepository.findAll(pageable);
@@ -53,6 +55,7 @@ public class RentalController {
      * @return A {@link ResponseEntity} object
      */
     @DeleteMapping("/rentals/{rentalId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteRental(@PathVariable final Long rentalId) {
         log.info("Delete Rental: {}", rentalId);
 
@@ -67,6 +70,7 @@ public class RentalController {
      * @return The created {@link Rental}
      */
     @PostMapping("/rentals")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Rental createRental(@Valid @RequestBody final RentalDTO rentalDTO) {
         log.info("Create a Rental: {}", rentalDTO);
         return getRentalService().saveOrUpdateRental(rentalDTO);
@@ -79,6 +83,7 @@ public class RentalController {
      * @return The updated {@link Rental}
      */
     @PutMapping("rentals/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Rental updateRental(@PathVariable final Long id,
             @Valid @RequestBody final RentalDTO rentalDTO) {
 

@@ -76,7 +76,7 @@ public class PurchaseService extends AbstractService {
         updateMovieStock(creatingPurchase, movie, oldMovie);
 
         log.info("This User: {}-{} purchased this movie: {}-{} for: {}", user.getId(),
-                user.getName(), movie.getId(), movie.getTitle(), purchase.getPrice());
+                user.getUsername(), movie.getId(), movie.getTitle(), purchase.getPrice());
 
         purchase.setUser(user);
         purchase.setMovie(movie);

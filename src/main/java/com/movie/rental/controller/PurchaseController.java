@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class PurchaseController {
      * @return A {@link Page} of {@link Purchase}
      */
     @GetMapping("/purchases")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<Purchase> getPurchases(final Pageable pageable) {
         log.info("Get Purchases: {}", pageable);
         return purchaseRepository.findAll(pageable);
@@ -53,6 +55,7 @@ public class PurchaseController {
      * @return A {@link ResponseEntity} object
      */
     @DeleteMapping("/purchases/{purchaseId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deletePurchase(@PathVariable final Long purchaseId) {
         log.info("Delete Purchase: {}", purchaseId);
 
@@ -67,6 +70,7 @@ public class PurchaseController {
      * @return The created {@link Purchase}
      */
     @PostMapping("/purchases")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Purchase createPurchase(@Valid @RequestBody final PurchaseDTO purchaseDTO) {
         log.info("Create a Purchase: {}", purchaseDTO);
         return getPurchaseService().saveOrUpdatePurchase(purchaseDTO);
@@ -79,6 +83,7 @@ public class PurchaseController {
      * @return The updated {@link Purchase}
      */
     @PutMapping("purchases/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Purchase updatePurchase(@PathVariable final Long id,
             @Valid @RequestBody final PurchaseDTO purchaseDTO) {
 

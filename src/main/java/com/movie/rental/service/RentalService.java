@@ -83,7 +83,7 @@ public class RentalService extends AbstractService {
         updateMovieStock(creatingRental, movie, oldMovie, rental, rentalDTO, returnDate);
 
         log.info("This User: {}-{} rented this movie: {}-{} for: {}, having as Due Date: {}, "
-                + "Return Date: {}, Penalty: {}", user.getId(), user.getName(),
+                + "Return Date: {}, Penalty: {}", user.getId(), user.getUsername(),
                 movie.getId(), movie.getTitle(), rental.getPrice(), dueDate,
                 returnDate, rentalDTO.getPenalty());
 

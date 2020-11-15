@@ -52,7 +52,7 @@ public class UserService extends AbstractService {
         final Movie movieObj = checkIfMovieExists(likeDTO.getMovieId());
 
         log.info("This User: {}-{} {} this movie: {}-{}", userObj.getId(),
-                userObj.getName(), likeDTO.getLike() ? "likes" : "unlikes",
+                userObj.getUsername(), likeDTO.getLike() ? "likes" : "unlikes",
                 movieObj.getId(), movieObj.getTitle());
 
         if (likeDTO.getLike()) {

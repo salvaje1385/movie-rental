@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -148,6 +149,7 @@ public class MovieController {
      * @return The created {@link Movie}
      */
     @PostMapping("/movies")
+    @PreAuthorize("hasRole('ADMIN')")
     public Movie createMovie(@Valid @RequestBody final Movie movie) {
         log.info("Create Movie: {}", movie.getTitle());
         return movieRepository.save(movie);
@@ -160,6 +162,7 @@ public class MovieController {
      * @return The updated {@link Movie}
      */
     @PutMapping("movies/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Movie updateMovie(@PathVariable final Long id,
                                    @Valid @RequestBody final Movie movieRequest) {
         log.info("Update Movie: id: {}, movie: {}", id, movieRequest.getTitle());
@@ -172,6 +175,7 @@ public class MovieController {
      * @return A {@link ResponseEntity} object
      */
     @DeleteMapping("/movies/{movieId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteMovie(@PathVariable final Long movieId) {
         log.info("Delete Movie: {}", movieId);
         return movieRepository.findById(movieId)
