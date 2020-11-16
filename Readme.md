@@ -25,6 +25,9 @@ mvn spring-boot:run
 ```
   
 **4. Create the user roles into the database:**
+  
+  This is not necessary if you restored the database.
+  
 
 ```
 INSERT INTO roles(name) VALUES('ROLE_USER');
