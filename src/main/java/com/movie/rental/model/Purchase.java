@@ -12,6 +12,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Purchase model
+ */
 @Entity
 @Table(name = "purchase")
 final @Data // lombok data annotation

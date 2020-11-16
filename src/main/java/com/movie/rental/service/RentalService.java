@@ -2,17 +2,16 @@ package com.movie.rental.service;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.movie.rental.model.Movie;
 import com.movie.rental.model.Rental;
 import com.movie.rental.model.User;
-import com.movie.rental.repository.MovieRepository;
-import com.movie.rental.repository.PurchaseRepository;
-import com.movie.rental.repository.RentalRepository;
-import com.movie.rental.repository.UserRepository;
 import com.movie.rental.service.dto.RentalDTO;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,28 +19,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j // lombok
+@Getter
+@Setter
 public class RentalService extends AbstractService {
 
-    private final MovieService movieService;
-
-    /**
-     * Full constructor
-     * @param userRepository An {@link UserRepository}
-     * @param movieRepository A {@link MovieRepository}
-     * @param purchaseRepository A {@link PurchaseRepository}
-     * @param rentalRepository A {@link RentalRepository}
-     * @param movieService A {@link MovieService}
-     */
-    public RentalService(final UserRepository userRepository,
-            final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository,
-            final MovieService movieService) {
-        super(userRepository, movieRepository, purchaseRepository,
-                rentalRepository);
-
-        this.movieService = movieService;
-    }
+    @Autowired
+    private MovieService movieService;
 
     /**
      * Save or update a Rental
@@ -151,11 +134,4 @@ public class RentalService extends AbstractService {
         getRentalRepository().delete(rental);
     }
 
-    /**
-     * Getter for the {@link MovieService}
-     * @return The {@link MovieService}
-     */
-    public MovieService getMovieService() {
-        return this.movieService;
-    }
 }

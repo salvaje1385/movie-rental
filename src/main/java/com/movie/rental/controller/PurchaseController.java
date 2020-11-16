@@ -1,5 +1,7 @@
 package com.movie.rental.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.rental.model.Purchase;
+import com.movie.rental.model.User;
 import com.movie.rental.repository.PurchaseRepository;
 import com.movie.rental.service.PurchaseService;
+import com.movie.rental.service.UserDetailsImpl;
 import com.movie.rental.service.dto.PurchaseDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Purchase Controller
+ */
 @Slf4j // lombok
 @RestController
-public class PurchaseController {
+public class PurchaseController extends AbstractController {
 
     private final PurchaseRepository purchaseRepository;
 
@@ -43,10 +50,21 @@ public class PurchaseController {
      * @return A {@link Page} of {@link Purchase}
      */
     @GetMapping("/purchases")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Page<Purchase> getPurchases(final Pageable pageable) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public List<Purchase> getPurchases(final Pageable pageable) {
         log.info("Get Purchases: {}", pageable);
-        return purchaseRepository.findAll(pageable);
+
+        final UserDetailsImpl userDetails = getLoggedInUser();
+
+        // Regular users only get the list of purchases they've made
+        if (!userDetails.isAdmin()) {
+            final User user = getPurchaseService().checkIfUserExists(userDetails.getId());
+            log.info("Getting this User purchases: {} - {}", user.getId(), user.getUsername());
+
+            return purchaseRepository.findByUser(user);
+        } else {
+            return purchaseRepository.findAll(pageable).getContent();
+        }
     }
 
     /**
@@ -55,7 +73,7 @@ public class PurchaseController {
      * @return A {@link ResponseEntity} object
      */
     @DeleteMapping("/purchases/{purchaseId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deletePurchase(@PathVariable final Long purchaseId) {
         log.info("Delete Purchase: {}", purchaseId);
 
@@ -83,7 +101,7 @@ public class PurchaseController {
      * @return The updated {@link Purchase}
      */
     @PutMapping("purchases/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Purchase updatePurchase(@PathVariable final Long id,
             @Valid @RequestBody final PurchaseDTO purchaseDTO) {
 

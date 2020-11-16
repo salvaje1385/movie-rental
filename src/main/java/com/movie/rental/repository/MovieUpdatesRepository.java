@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.movie.rental.model.MovieUpdates;
 
+/**
+ * Movie Updates repository
+ */
 @Repository
 public interface MovieUpdatesRepository extends JpaRepository<MovieUpdates, Long> {
 

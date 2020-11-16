@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +15,9 @@ import com.movie.rental.repository.MovieUpdatesRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Movie Updates Controller
+ */
 @Slf4j // lombok
 @RestController
 public class MovieUpdatesController {
@@ -33,7 +35,7 @@ public class MovieUpdatesController {
      * @return A {@link Page} of {@link MovieUpdates}
      */
     @GetMapping("/movieUpdates")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<MovieUpdates> getMovieUpdates(final Pageable pageable) {
         log.info("Get MovieUpdates: {}", pageable);
         return movieUpdatesRepository.findAll(pageable);
@@ -44,8 +46,8 @@ public class MovieUpdatesController {
      * @param movieUpdatesId The {@link MovieUpdates}'s Id
      * @return A {@link ResponseEntity} object
      */
-    @DeleteMapping("/movieUpdates/{movieUpdatesId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    //@DeleteMapping("/movieUpdates/{movieUpdatesId}")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteMovieUpdates(@PathVariable final Long movieUpdatesId) {
         log.info("Delete MovieUpdates: {}", movieUpdatesId);
         return movieUpdatesRepository.findById(movieUpdatesId)

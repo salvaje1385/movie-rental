@@ -25,6 +25,9 @@ import com.movie.rental.service.dto.LikeDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Rental Controller
+ */
 @Slf4j // lombok
 @RestController
 public class UserController {
@@ -57,8 +60,8 @@ public class UserController {
      * @param user The {@link User} object
      * @return The created {@link User}
      */
-    @PostMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PostMapping("/users")
+    //@PreAuthorize("hasRole('ADMIN')")
     public User createUser(@Valid @RequestBody final User user) {
         log.info("Create User: {}", user);
         return userRepository.save(user);
@@ -77,9 +80,9 @@ public class UserController {
         log.info("Update User: id: {}, user: {}", id, userRequest);
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setUsername(userRequest.getUsername());
+                    //user.setUsername(userRequest.getUsername());
                     user.setEmail(userRequest.getEmail());
-                    user.setPassword(userRequest.getPassword());
+                    //user.setPassword(userRequest.getPassword());
                     user.setPhone(userRequest.getPhone());
                     user.setAddress(userRequest.getAddress());
                     return userRepository.save(user);

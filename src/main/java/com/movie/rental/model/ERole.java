@@ -1,7 +1,7 @@
 package com.movie.rental.model;
 
 /**
- * Role enum
+ * Role Enum
  */
 public enum ERole {
     ROLE_USER,

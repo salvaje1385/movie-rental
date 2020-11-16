@@ -1,16 +1,15 @@
 package com.movie.rental.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.movie.rental.model.Movie;
 import com.movie.rental.model.MovieUpdates;
 import com.movie.rental.model.MovieUpdates.UpdateType;
-import com.movie.rental.repository.MovieRepository;
 import com.movie.rental.repository.MovieUpdatesRepository;
-import com.movie.rental.repository.PurchaseRepository;
-import com.movie.rental.repository.RentalRepository;
-import com.movie.rental.repository.UserRepository;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -18,27 +17,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j // lombok
+@Getter
+@Setter
 public class MovieUpdatesService extends AbstractService {
 
-    private final MovieUpdatesRepository movieUpdatesRepository;
-
-    /**
-     * Full constructor
-     * @param userRepository An {@link UserRepository}
-     * @param movieRepository A {@link MovieRepository}
-     * @param purchaseRepository A {@link PurchaseRepository}
-     * @param rentalRepository A {@link RentalRepository}
-     */
-    public MovieUpdatesService(final UserRepository userRepository,
-            final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository,
-            final MovieUpdatesRepository movieUpdatesRepository) {
-        super(userRepository, movieRepository, purchaseRepository,
-                rentalRepository);
-
-        this.movieUpdatesRepository = movieUpdatesRepository;
-    }
+    @Autowired
+    private MovieUpdatesRepository movieUpdatesRepository;
 
     /**
      * Create a MovieUpdate register
@@ -82,14 +66,6 @@ public class MovieUpdatesService extends AbstractService {
         movieUpdate.setOldValue(oldValue);
         movieUpdate.setNewValue(newValue);
         getMovieUpdatesRepository().save(movieUpdate);
-    }
-
-    /**
-     * Getter for the MovieUpdates Repository
-     * @return The MovieUpdates Repository
-     */
-    public MovieUpdatesRepository getMovieUpdatesRepository() {
-        return this.movieUpdatesRepository;
     }
 
 }

@@ -17,6 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
+/**
+ * An Abstract class which other models extend
+ */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Data // lombok data annotation

@@ -14,6 +14,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * Rental model
+ */
 @Entity
 @Table(name = "rental")
 final @Data // lombok data annotation

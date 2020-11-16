@@ -21,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The Movie model
+ */
 @Entity
 @Table(name = "movie")
 @Getter

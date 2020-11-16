@@ -29,12 +29,16 @@ import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.repository.MovieRepository;
 import com.movie.rental.service.MovieService;
+import com.movie.rental.service.UserDetailsImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Movie Controller
+ */
 @Slf4j // lombok
 @RestController
-public class MovieController {
+public class MovieController extends AbstractController {
 
     private final MovieRepository movieRepository;
 
@@ -75,6 +79,19 @@ public class MovieController {
         log.info("Get Movies parameters: title: {}, available: {}, page: {}, size: {}, sort: {}",
                 title, available, page, size, sort);
 
+        final UserDetailsImpl userDetails = getLoggedInUser();
+
+        Boolean availableParam = available;
+
+        // Anonymous (not logged in) users see only available Movies
+        if (userDetails == null) {
+            availableParam = Boolean.TRUE;
+
+         // Regular Users see only available Movies
+        } else if (userDetails != null && !userDetails.isAdmin()) {
+            availableParam = Boolean.TRUE;
+        }
+
         final List<Order> orders = new ArrayList<Order>();
 
         if (sort[0].contains(",")) {
@@ -93,15 +110,15 @@ public class MovieController {
         final Pageable pagingSort = PageRequest.of(page, size, Sort.by(orders));
 
         Page<Movie> pageResult = null;
-        if (title == null && available == null) {
+        if (title == null && availableParam == null) {
             pageResult = movieRepository.findAll(pagingSort);
-        } else if (title != null && available != null) {
+        } else if (title != null && availableParam != null) {
             pageResult = movieRepository.findByTitleContainingIgnoreCaseAndAvailable(
-                    title, available, pagingSort);
+                    title, availableParam, pagingSort);
         } else if (title != null) {
             pageResult = movieRepository.findByTitleContainingIgnoreCase(title, pagingSort);
-        } else if (available != null) {
-            pageResult = movieRepository.findByAvailable(available, pagingSort);
+        } else if (availableParam != null) {
+            pageResult = movieRepository.findByAvailable(availableParam, pagingSort);
         }
 
         if (pageResult == null) {

@@ -1,77 +1,131 @@
 ## REST API
 
+# Sign Up
+
+You can use the "user" or "admin" roles.
+
+```
+http://localhost:8080/api/auth/signup
+POST
+
+{
+  "username": "sruiz",
+  "email": "sruiz@test.com",
+  "password": "123456",
+  "role": [
+	"user"
+  ]
+}
+```
+
+# Signin
+
+```
+http://localhost:8080/api/auth/signin
+POST
+
+{
+  "username": "sruiz",
+  "password": "12345678"
+}
+```
+
+In the response you're going to get the accessToken and the tokenType, 
+that you're going to use to authenticate each service call:
+  
+```
+"accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjA1NTA0MjI1LCJleHAiOjE2MDU1OTA2MjV9",  
+"tokenType": "Bearer"
+```
+  
+## IMPORTANT!  
+  
+** Add the returned "tokenType" and "accessToken" into every service call's header to authenticate the User:**  
+  
+```
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjA1NTA0MjI1LCJleHAiOjE2MDU1OTA2MjV9
+```
+  
+  
 # 1. Movies
 
-1.1 Get:
+1.1 Get:  
 
-All the Movie REST calls are paginated.
+All the Movie REST calls are paginated.  
 
 1.1.1 Get all Movies:
-
-```bash
+  
+  Note that the GET "/movies" service can be accessed by logged in or logged out users.  
+  
+```
 http://localhost:8080/movies
 GET
 ```
-
-1.1.2 Get all Movies which title contains "ave" ignoring case:
-
-```bash
+  
+  1.1.2 Get all Movies which title contains "ave" ignoring case:
+  
+```
 http://localhost:8080/movies?title=ave
 GET
 ```
-
+  
 1.1.3 Get all Movies which title contains "ave" ignoring case, and are available:
-
-```bash
+  
+  
+```
 http://localhost:8080/movies?title=ave&available=true
 GET
 ```
 
 1.1.4 Get all Movies which title contains "ave" ignoring case, and aren't available:
-
-```bash
+  
+  **Only admin users can see unavailable movies. Regular users and logged out users can only see available movies.**  
+  
+```
 http://localhost:8080/movies?title=ave&available=false
 GET
 ```
 
 1.1.5 Get all available Movies:
 
-```bash
+```
 http://localhost:8080/movies?available=true
 GET
 ```
 
 1.1.6 Get all unavailable Movies:
 
-```bash
+```
 http://localhost:8080/movies?available=false
 GET
 ```
 
 1.1.7 Sort Movies by likes (descending), and then by title (descending):
 
-```bash
+```
 http://localhost:8080/movies?sort=likes,desc&sort=title,desc
 GET
 ```
 
 1.1.8 Get all Movies which title contains "a" ignoring case, and sort by likes, descending:
 
-```bash
+```
 http://localhost:8080/movies?title=a&sort=likes,desc
 GET
 ```
 
 1.1.9 Get all Movies in the second page (pages are 0 indexed), having 10 as the page size:
 
-```bash
+```
 http://localhost:8080/movies?page=1&size=10
 GET
 ```
 
 1.2 Create:
 
-```bash
+**Only admin users can create, update or delete movies.**
+
+```
 http://localhost:8080/movies
 POST
 
@@ -88,7 +142,7 @@ POST
 
 1.3 Update:
 
-```bash
+```
 http://localhost:8080/movies/3701
 PUT
 
@@ -106,7 +160,7 @@ PUT
 
 1.4 Delete:
 
-```bash
+```
 http://localhost:8080/movies/3701
 DELETE
 ```
@@ -115,39 +169,27 @@ DELETE
 
 
 # 2. Users
-
-
+  
+  **Only admin users can get, update or delete Users.**
+  
+  Users are created in the Sing Up service.
+  
 2.1 Get:
 
-```bash
+```
 http://localhost:8080/users
 GET
 ```
 
-2.2 Create:
-
-```bash
-http://localhost:8080/users
-POST
-
-{
-  "name": "Humberto Perez",
-  "email": "hperez@test.com",
-  "password": "1234",
-  "phone": "155611511",
-  "address": "at home"
-}
-```
-
 2.3 Update:
 
-```bash
+You can't update the username and password fields.
+
+```
 http://localhost:8080/users/1000
 PUT
 {
-  "name": "Humberto Perez",
   "email": "hperez@test.com",
-  "password": "1234",
   "phone": "155611511",
   "address": "at home"
 }
@@ -155,7 +197,7 @@ PUT
 
 2.4 Delete:
 
-```bash
+```
 http://localhost:8080/users/1000
 DELETE
 ```
@@ -167,7 +209,7 @@ DELETE
 
 3.1 Like a Movie:
 
-```bash
+```
 http://localhost:8080/users/likeMovie
 POST
 
@@ -180,7 +222,7 @@ POST
 
 3.2 Unlike a Movie:
 
-```bash
+```
 http://localhost:8080/users/likeMovie
 POST
 
@@ -193,17 +235,20 @@ POST
 
 
 # 4. Rentals
-
+  
+  
 4.1 Get:
-
-```bash
+  
+  Regular users will get only the rentals created by themselves. Admin users get all the rentals.
+  
+```
 http://localhost:8080/rentals
 GET
 ```
 
 4.2.1 Rent a Movie:
 
-```bash
+```
 http://localhost:8080/rentals
 POST
 
@@ -215,8 +260,10 @@ POST
 ```
 
 4.2.2 Return a rented Movie:
-
-```bash
+  
+  **Only admin users can update or delete a rental.**
+  
+```
 http://localhost:8080/rentals/18
 PUT
 
@@ -230,7 +277,7 @@ PUT
 
 4.2.3 Add a penalty:
 
-```bash
+```
 http://localhost:8080/rentals/18
 PUT
 
@@ -245,23 +292,25 @@ PUT
 
 4.3 Delete:
 
-```bash
+```
 http://localhost:8080/rentals/1
 DELETE
 ```
 
 # 5. Purchases
-
+  
 5.1 Get:
-
-```bash
+  
+  Regular users will get only the purchases created by themselves. Admin users get all the purchases.
+  
+```
 http://localhost:8080/purchases
 GET
 ```
 
 5.2 Create:
 
-```bash
+```
 http://localhost:8080/purchases
 POST
 
@@ -272,8 +321,10 @@ POST
 ```
 
 5.3 Update:
-
-```bash
+  
+  **Only admin users can update or delete a purchase.**
+  
+```
 http://localhost:8080/purchases/19
 PUT
 
@@ -285,23 +336,18 @@ PUT
 
 5.4 Delete:
 
-```bash
+```
 http://localhost:8080/purchases/1
 DELETE
 ```
 
 # 6. Movie Updates
-
+  
+  Only admin users can get movie updates.
+  
 6.1 Get:
 
-```bash
+```
 http://localhost:8080/movieUpdates
 GET
 ```
-
-6.2 Delete:
-
-```bash
-http://localhost:8080/movieUpdates/1
-DELETE
-

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.movie.rental.model.User;
 
+/**
+ * User repository
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

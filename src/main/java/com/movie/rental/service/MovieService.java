@@ -1,14 +1,13 @@
 package com.movie.rental.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.movie.rental.exception.MovieRentalValidationException;
 import com.movie.rental.model.Movie;
-import com.movie.rental.repository.MovieRepository;
-import com.movie.rental.repository.PurchaseRepository;
-import com.movie.rental.repository.RentalRepository;
-import com.movie.rental.repository.UserRepository;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -16,27 +15,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j // lombok
+@Getter
+@Setter
 public class MovieService  extends AbstractService {
 
-    private final MovieUpdatesService movieUpdatesService;
-
-    /**
-     * Full constructor
-     * @param userRepository An {@link UserRepository}
-     * @param movieRepository A {@link MovieRepository}
-     * @param purchaseRepository A {@link PurchaseRepository}
-     * @param rentalRepository A {@link RentalRepository}
-     */
-    public MovieService(final UserRepository userRepository,
-            final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository,
-            final MovieUpdatesService movieUpdatesService) {
-        super(userRepository, movieRepository, purchaseRepository,
-                rentalRepository);
-
-        this.movieUpdatesService = movieUpdatesService;
-    }
+    @Autowired
+    private MovieUpdatesService movieUpdatesService;
 
     /**
      * Decrease the Movie Stock by one
@@ -48,7 +32,15 @@ public class MovieService  extends AbstractService {
         if (stock > 0) {
             log.info("Decreasing this Movie stock by 1: {} - {}", movie.getId(),
                     movie.getTitle());
-            movie.setStock(stock - 1);
+
+            final Integer newStock = stock - 1;
+            movie.setStock(newStock);
+
+            // If the stock is 0 then set the Movie as not available
+            if (newStock.equals(0)) {
+                movie.setAvailable(Boolean.FALSE);
+            }
+
             getMovieRepository().save(movie);
         } else {
             throw new MovieRentalValidationException("The Movie stock can't be lower than 0");
@@ -62,7 +54,15 @@ public class MovieService  extends AbstractService {
     public void increaseStock(final Movie movie) {
         log.info("Increasing this Movie stock by 1: {} - {}", movie.getId(),
                 movie.getTitle());
-        movie.setStock(movie.getStock() + 1);
+
+        final Integer oldStock = movie.getStock();
+
+        // If the old stock was 0, then set the Movie as available
+        if (oldStock.equals(0)) {
+            movie.setAvailable(Boolean.TRUE);
+        }
+
+        movie.setStock(oldStock + 1);
         getMovieRepository().save(movie);
     }
 
@@ -122,14 +122,6 @@ public class MovieService  extends AbstractService {
                 oldRentalPrice, oldSalePrice);
 
         return movie;
-    }
-
-    /**
-     * Getter for the MovieUpdates Service
-     * @return The MovieUpdates Service
-     */
-    public MovieUpdatesService getMovieUpdatesService() {
-        return this.movieUpdatesService;
     }
 
 }

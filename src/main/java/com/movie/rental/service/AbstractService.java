@@ -2,6 +2,8 @@ package com.movie.rental.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.movie.rental.exception.ResourceNotFoundException;
 import com.movie.rental.model.Movie;
 import com.movie.rental.model.Purchase;
@@ -12,25 +14,27 @@ import com.movie.rental.repository.PurchaseRepository;
 import com.movie.rental.repository.RentalRepository;
 import com.movie.rental.repository.UserRepository;
 
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Abstract class for the services
+ */
+@Getter
+@Setter
 public class AbstractService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final MovieRepository movieRepository;
+    @Autowired
+    private MovieRepository movieRepository;
 
-    private final PurchaseRepository purchaseRepository;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
-    private final RentalRepository rentalRepository;
-
-    public AbstractService(final UserRepository userRepository,
-            final MovieRepository movieRepository,
-            final PurchaseRepository purchaseRepository,
-            final RentalRepository rentalRepository) {
-        this.userRepository = userRepository;
-        this.movieRepository = movieRepository;
-        this.purchaseRepository = purchaseRepository;
-        this.rentalRepository = rentalRepository;
-    }
+    @Autowired
+    private RentalRepository rentalRepository;
 
     /**
      * Check if an User object exists, if so, return it, else throw exception
@@ -106,38 +110,6 @@ public class AbstractService {
         }
 
         return rentalObj;
-    }
-
-    /**
-     * Getter for the {@link UserRepository}
-     * @return The {@link UserRepository}
-     */
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    /**
-     * Getter for the {@link MovieRepository}
-     * @return The {@link MovieRepository}
-     */
-    public MovieRepository getMovieRepository() {
-        return movieRepository;
-    }
-
-    /**
-     * Getter for the {@link PurchaseRepository}
-     * @return The {@link PurchaseRepository}
-     */
-    public PurchaseRepository getPurchaseRepository() {
-        return purchaseRepository;
-    }
-
-    /**
-     * Getter for the {@link RentalRepository}
-     * @return The {@link RentalRepository}
-     */
-    public RentalRepository getRentalRepository() {
-        return rentalRepository;
     }
 
 }

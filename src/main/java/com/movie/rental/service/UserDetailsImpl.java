@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.movie.rental.model.User;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
@@ -29,6 +30,10 @@ public class UserDetailsImpl implements UserDetails {
 
     @JsonIgnore
     private final String password;
+
+    @JsonIgnore
+    @Getter(AccessLevel.NONE)
+    private Boolean isAdmin;
 
     private final Collection<? extends GrantedAuthority> authorities;
 
@@ -87,5 +92,21 @@ public class UserDetailsImpl implements UserDetails {
             return false;
         final UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
+    }
+
+    /**
+     * Getter for the isAdmin property
+     * @return The isAdmin property
+     */
+    public Boolean isAdmin() {
+        return this.isAdmin;
+    }
+
+    /**
+     * Setter for the isAdmin property
+     * @param isAdmin The isAdmin property
+     */
+    public void setAdmin(final Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

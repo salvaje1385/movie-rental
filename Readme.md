@@ -2,14 +2,14 @@
 
 ## Tutorial
 
-Spring Boot, PostgreSQL, JPA, Hibernate RESTful CRUD API
+Spring Boot, PostgreSQL, Dojo, JPA, JWT, Hibernate, RESTful CRUD API
 
 ## Steps to Setup
 
 **1. Clone the repository**
 
-```bash
-git clone https://github.com/
+```
+git clone https://github.com/salvaje1385/movie-rental.git
 ```
 
 **2. Configure PostgreSQL**
@@ -20,15 +20,27 @@ First, create a database named `movie_rental`. Then, open `src/main/resources/ap
 
 Type the following command from the root directory of the project to run it -
 
-```bash
+```
 mvn spring-boot:run
 ```
+  
+**4. Create the user roles into the database:**
 
-
-
+```
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+```
+  
+  
+  Find a database snapshot you can restore in the projects's root folder:
+  
+```
+movie_rental_db.sql
+```
+  
 You can go to the movies page through this URL
 
-```bash
+```
 http://localhost:8080/movierental
 ```
 
@@ -38,7 +50,7 @@ Also look the **REST_API.md** file.
 
 Alternatively, you can package the application in the form of a JAR file and then run it like so -
 
-```bash
+```
 mvn clean package
 java -jar target/movie-rental-0.0.1-SNAPSHOT.jar
 ```

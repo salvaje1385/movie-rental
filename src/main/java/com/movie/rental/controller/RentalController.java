@@ -1,5 +1,7 @@
 package com.movie.rental.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.rental.model.Rental;
+import com.movie.rental.model.User;
 import com.movie.rental.repository.RentalRepository;
 import com.movie.rental.service.RentalService;
+import com.movie.rental.service.UserDetailsImpl;
 import com.movie.rental.service.dto.RentalDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Rental Controller
+ */
 @Slf4j // lombok
 @RestController
-public class RentalController {
+public class RentalController extends AbstractController {
 
     private final RentalRepository rentalRepository;
 
@@ -43,10 +50,21 @@ public class RentalController {
      * @return A {@link Page} of {@link Rental}
      */
     @GetMapping("/rentals")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Page<Rental> getRentals(final Pageable pageable) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public List<Rental> getRentals(final Pageable pageable) {
         log.info("Get Rentals: {}", pageable);
-        return rentalRepository.findAll(pageable);
+
+        final UserDetailsImpl userDetails = getLoggedInUser();
+
+        // Regular users only get the list of rentals they've made
+        if (!userDetails.isAdmin()) {
+            final User user = getRentalService().checkIfUserExists(userDetails.getId());
+            log.info("Getting this User rentals: {} - {}", user.getId(), user.getUsername());
+
+            return rentalRepository.findByUser(user);
+        } else {
+            return rentalRepository.findAll(pageable).getContent();
+        }
     }
 
     /**
@@ -55,7 +73,7 @@ public class RentalController {
      * @return A {@link ResponseEntity} object
      */
     @DeleteMapping("/rentals/{rentalId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteRental(@PathVariable final Long rentalId) {
         log.info("Delete Rental: {}", rentalId);
 
@@ -83,7 +101,7 @@ public class RentalController {
      * @return The updated {@link Rental}
      */
     @PutMapping("rentals/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Rental updateRental(@PathVariable final Long id,
             @Valid @RequestBody final RentalDTO rentalDTO) {
 

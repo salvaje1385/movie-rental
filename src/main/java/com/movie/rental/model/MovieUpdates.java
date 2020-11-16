@@ -12,6 +12,9 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * The Movie Updates model
+ */
 @Entity
 @Table(name = "movie_updates")
 final @Data // lombok data annotation
