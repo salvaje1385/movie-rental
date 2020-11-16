@@ -19,7 +19,23 @@ POST
   ]
 }
 ```
+  
+  **If you restored the database you can use the following user credentials.**  
+  
+```
+    For user:
+    {
+        "username": "user",
+        "password": "123456"
+    }
 
+    For admin:
+    {
+        "username": "admin",
+        "password": "adminpass"
+    }
+```
+  
 # Signin
 
 ```
@@ -48,22 +64,6 @@ that you're going to use to authenticate each service call:
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjA1NTA0MjI1LCJleHAiOjE2MDU1OTA2MjV9
 ```
   
-  
-  **If you restored the database you can use the following user credentials.**  
-  
-```
-    For user:
-    {
-        "username": "user",
-        "password": "123456"
-    }
-
-    For admin:
-    {
-        "username": "admin",
-        "password": "adminpass"
-    }
-```
   
 # 1. Movies
 
