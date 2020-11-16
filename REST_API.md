@@ -1,5 +1,7 @@
-## REST API
-
+# REST API
+  
+  
+  
 # Sign Up
 
 You can use the "user" or "admin" roles.
