@@ -40,7 +40,7 @@ that you're going to use to authenticate each service call:
   
 ## IMPORTANT!  
   
-** Add the returned "tokenType" and "accessToken" into every service call's header to authenticate the User:**  
+  **Add the returned "tokenType" and "accessToken" into every service call's header to authenticate the User.**  
   
 ```
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjA1NTA0MjI1LCJleHAiOjE2MDU1OTA2MjV9
