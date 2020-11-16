@@ -4,15 +4,15 @@
   
 # Sign Up
 
-You can use the "user" or "admin" roles.
+**You can use the "user" or "admin" roles.**
 
 ```
 http://localhost:8080/api/auth/signup
 POST
 
 {
-  "username": "sruiz",
-  "email": "sruiz@test.com",
+  "username": "aperez",
+  "email": "aperez@test.com",
   "password": "123456",
   "role": [
 	"user"
@@ -27,8 +27,8 @@ http://localhost:8080/api/auth/signin
 POST
 
 {
-  "username": "sruiz",
-  "password": "12345678"
+  "username": "aperez",
+  "password": "123456"
 }
 ```
 
@@ -48,6 +48,22 @@ that you're going to use to authenticate each service call:
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNjA1NTA0MjI1LCJleHAiOjE2MDU1OTA2MjV9
 ```
   
+  
+  **If you restored the database you can use the following user credentials.**  
+  
+```
+    For user:
+    {
+        "username": "user",
+        "password": "123456"
+    }
+
+    For admin:
+    {
+        "username": "admin",
+        "password": "adminpass"
+    }
+```
   
 # 1. Movies
 
